@@ -1,9 +1,11 @@
 #![allow(unused)]
 
+use std::net::SocketAddr;
+
 use axum::{Router, routing::get, response::Html};
 use log::info;
 
-async fn hello() -> &'static str {
+async fn hello_handler() -> &'static str {
     "Hello Solana World"
 }
 
@@ -12,13 +14,11 @@ async fn main() {
     env_logger::init();
 
     let app = Router::new().route(
-        "/hello", get(hello));
+        "/hello", get(hello_handler));
         
-    let addr = "0.0.0.0:3000";
+    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
 
-    info!("Listening on address: {}", addr);
+    info!("Listening on address: {:?}", addr);
 
-    let listener = tokio::net::TcpListener::bind(addr).await.unwrap(); 
-
-    axum::serve(listener, app).await.unwrap();
+    axum_server::bind(addr).serve(app.into_make_service()).await.unwrap();
 }
