@@ -1,14 +1,14 @@
 use axum::response::{Response, IntoResponse};
 use axum::http::StatusCode;
 
-pub type Result<T> = core::result::Result<T, Error>;
+pub type Result<T> = core::result::Result<T, LoginError>;
 
 #[derive(Debug)]
-pub enum Error {
+pub enum LoginError {
    LoginFail 
 }
 
-impl IntoResponse for Error {
+impl IntoResponse for LoginError {
     fn into_response(self) -> Response {
         (StatusCode::INTERNAL_SERVER_ERROR, "UNHANDLED_CLIENT_ERROR").into_response()
     }

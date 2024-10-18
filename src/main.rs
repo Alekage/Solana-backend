@@ -8,7 +8,7 @@ use log::info;
 mod error;
 mod web;
 
-pub use crate::error::{Error, Result};
+pub use crate::error::{LoginError, Result};
 
 #[derive(Debug, Deserialize)]
 struct HelloParams {
@@ -23,8 +23,8 @@ async fn hello_handler(Path(name): Path<String>) -> impl IntoResponse {
 async fn main() {
     env_logger::init();
 
-    let app = Router::new().route(
-        "/hello/:name", get(hello_handler));
+    let app = Router::new().merge(web::routes_login::routes()).route(
+        "/hello/:name", get(hello_handler));;
         
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
 
