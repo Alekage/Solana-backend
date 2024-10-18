@@ -5,6 +5,11 @@ use axum::{extract::{Query,Path }, response::{Html, IntoResponse}, routing::get,
 use serde::Deserialize;
 use log::info;
 
+mod error;
+mod web;
+
+pub use crate::error::{Error, Result};
+
 #[derive(Debug, Deserialize)]
 struct HelloParams {
     chain_name: Option<String>
