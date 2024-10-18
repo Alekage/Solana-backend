@@ -1,7 +1,8 @@
 #![allow(unused)]
 
 use std::net::SocketAddr;
-use axum::{extract::{Query,Path }, response::{Html, IntoResponse}, routing::get, Router};
+use axum::{extract::{Path, Query }, middleware, response::{Html, IntoResponse, Response}, routing::get, Router};
+use tower_cookies::CookieManagerLayer;
 use serde::Deserialize;
 use log::info;
 
@@ -10,21 +11,26 @@ mod web;
 
 pub use crate::error::{LoginError, Result};
 
-#[derive(Debug, Deserialize)]
-struct HelloParams {
-    chain_name: Option<String>
+async fn main_response_mapper(res: Response) -> Response {
+    res
 }
 
-async fn hello_handler(Path(name): Path<String>) -> impl IntoResponse {
-    Html(format!("Hello, {}", name))
-}
 
 #[tokio::main]
 async fn main() {
     env_logger::init();
 
-    let app = Router::new().merge(web::routes_login::routes()).route(
-        "/hello/:name", get(hello_handler));;
+    // .merge() is used to merge the paths of two or more routers into a single Router
+
+    // for a layer to be implemented over other routes and layers it has to be below them. 
+    // layers are read bottom up!
+    // layers are used to add additional processing to a requesto for a group of routes.
+    let app = Router::new()
+    .merge(web::routes_login::routes())
+    .layer(middleware::map_response(main_response_mapper))
+    .layer(CookieManagerLayer::new());
+    
+
         
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
 
