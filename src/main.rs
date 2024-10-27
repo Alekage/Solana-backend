@@ -7,6 +7,7 @@ use serde::Deserialize;
 use log::info;
 
 mod error;
+mod model;
 mod web;
 
 pub use crate::error::{LoginError, Result};
