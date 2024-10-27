@@ -8,8 +8,6 @@ use serde_json::{Value, json};
 use log::info;
 use crate::web::AUTH_TOKEN;
 
-
-
 pub fn routes() -> Router {
     Router::new().route("/api/login", post(api_login))
 }
@@ -28,7 +26,6 @@ async fn api_login(cookie: Cookies, payload: Json<LoginPayload>) -> Result<Json<
 
     info!("JWT Generated!");
 
-    // FIX: Implement real auth-token generation/signature
     cookie.add(Cookie::new(AUTH_TOKEN, jwt.clone()));    
 
     let body = Json(json!({
