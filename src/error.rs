@@ -5,7 +5,10 @@ pub type Result<T> = core::result::Result<T, LoginError>;
 
 #[derive(Debug)]
 pub enum LoginError {
-   LoginFail 
+    // Auth Errs
+   LoginFail, 
+    // Crud Errs
+    DeleteTicketFailIdNotFound { id: u64 }
 }
 
 impl IntoResponse for LoginError {

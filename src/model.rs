@@ -1,4 +1,4 @@
-use crate::{error, Result};
+use crate::{error, LoginError, Result};
 use serde::{Deserialize, Serialize};
 use std::sync::{Arc, Mutex};
 
@@ -50,6 +50,16 @@ impl ModelController {
         let store = self.tickets_store.lock().unwrap();
 
         let tickets: Vec<Ticket> = store.iter().filter_map(|t| t.clone()).collect();
-        todo!()
+        
+        Ok(tickets)
+    }
+
+    // Delete 
+    pub async fn delete_ticket(&self, id: u64) -> Result<Ticket> {
+        let mut store = self.tickets_store.lock().unwrap();
+
+        let ticket = store.get_mut(id as usize).and_then(|t| t.take());
+
+        ticket.ok_or(LoginError::DeleteTicketFailIdNotFound { id })
     }
 }
