@@ -1,7 +1,7 @@
 #![allow(unused)]
 
 use std::net::SocketAddr;
-use axum::{extract::{Path, Query }, middleware, response::{Html, IntoResponse, Response}, routing::get, Router};
+use axum::{extract::{Path, Query}, middleware, response::{Html, IntoResponse, Response}, routing::get, Router};
 use tower_cookies::CookieManagerLayer;
 use serde::Deserialize;
 use log::info;

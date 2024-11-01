@@ -15,6 +15,7 @@ pub struct TicketForCreate {
 }
 
 // region: ---Model Controller
+#[derive(Clone)]
 pub struct ModelController {
     tickets_store: Arc<Mutex<Vec<Option<Ticket>>>>
 }
