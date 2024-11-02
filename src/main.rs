@@ -31,6 +31,9 @@ async fn main() -> Result<()> {
     // layers are used to add additional processing to a requesto for a group of routes.
     let app = Router::new()
     .merge(web::routes_login::routes())
+    // nest allows us to create routes which will all start with api/...
+    // the model_controller clone is not deep clone sicne it has an Arc<Mutex<>>
+    // It is just a +1 reference counter.
     .nest("/api", web::routes_ticket::routes(model_controler.clone()))
     .layer(middleware::map_response(main_response_mapper))
     .layer(CookieManagerLayer::new());

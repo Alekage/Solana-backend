@@ -14,9 +14,12 @@ pub struct TicketForCreate {
     pub title: String
 }
 
-// region: ---Model Controller
+/// Model Conroler is a component/module responsible for managing
+/// and interacting with the data model of an application
 #[derive(Clone)]
 pub struct ModelController {
+    /// As of right now, this is in-memory data structure, 
+    /// which will become a database at one point
     tickets_store: Arc<Mutex<Vec<Option<Ticket>>>>
 }
 
